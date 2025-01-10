@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Form</title>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--CDN file of bootstrap -->
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <div class="container">
+        <form id="signup-form">
+            <h2 class="text-center">Create Your Account</h2>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Mohit Jorawar" required>
+                <div class="error-message" id="name-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your Email" required>
+                <div class="error-message" id="email-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter phone number" required>
+                <div class="error-message" id="phone-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Atleast 8 characters" required>
+                <div class="error-message" id="password-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="form-control" placeholder="Repeat your password" required>
+                <div class="error-message" id="confirm-password-error"></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="#">Log in</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signup-form');
+
+        // Function to validate name
+        const validateName = (name) => {
+            return name.length < 5 ? 'Name must be at least 5 characters long.' : '';
+        };
+
+        // Function to validate email
+        const validateEmail = (email) => {
+            return !email.includes('@') ? 'Please enter a valid email address.' : '';
+        };
+
+        // Function to validate phone number
+        const validatePhone = (phone) => {
+            const phoneRegex = /^\d{10}$/;
+            return phone === '1234567890' || !phoneRegex.test(phone) ? 'Phone number must be a 10-digit number and cannot be 1234567890.' : '';
+        };
+
+        // Function to validate password
+        const validatePassword = (password, name) => {
+            const passwordRegex = /^(?=.[A-Za-z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return password === 'password' || password === name || !passwordRegex.test(password) ? 
+                'Password must be at least 8 characters long, include a number and a special character, and cannot be "password" or your name.' : '';
+        };
+
+        // Function to validate confirm password
+        const validateConfirmPassword = (password, confirmPassword) => {
+            return password !== confirmPassword ? 'Passwords do not match.' : '';
+        };
+
+        form.addEventListener('submit', ( e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Validate each field
+            const nameError = validateName(name);
+            const emailError = validateEmail(email);
+            const phoneError = validatePhone(phone);
+            const passwordError = validatePassword(password, name);
+            const confirmPasswordError = validateConfirmPassword(password, confirmPassword);
+
+            // Display error messages
+            document.getElementById('name-error').textContent = nameError;
+            document.getElementById('email-error').textContent = emailError;
+            document.getElementById('phone-error').textContent = phoneError;
+            document.getElementById('password-error').textContent = passwordError;
+            document.getElementById('confirm-password-error').textContent = confirmPasswordError;
+
+            // Check if there are no errors
+            if (!nameError && !emailError && !phoneError && !passwordError && !confirmPasswordError) {
+                alert('Your account has been created successfully!');
+                form.reset();
+                document.getElementById('name-error').textContent = '';
+                document.getElementById('email-error').textContent = '';
+                document.getElementById('phone-error').textContent = '';
+                document.getElementById('password-error').textContent = '';
+                document.getElementById('confirm-password-error').textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>
